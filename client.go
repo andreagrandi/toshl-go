@@ -13,16 +13,15 @@ const (
 type Client struct {
 	client  *http.Client
 	BaseURL *url.URL
+	token   string
 }
 
 // NewClient returns a new Toshl client
-func NewClient(httpClient *http.Client) *Client {
-	if httpClient == nil {
-		httpClient = http.DefaultClient
-	}
-
+func NewClient(token string) *Client {
+	httpClient := http.DefaultClient
 	baseURL, _ := url.Parse(defaultBaseURL)
-	c := &Client{client: httpClient, BaseURL: baseURL}
+
+	c := &Client{client: httpClient, BaseURL: baseURL, token: token}
 
 	return c
 }

@@ -15,7 +15,7 @@ func TestClientDefaultURL(t *testing.T) {
 
 func TestClientNewClient(t *testing.T) {
 	expected := "https://api.toshl.com"
-	c := NewClient(nil)
+	c := NewClient("abcd1234")
 	actual := c.BaseURL.String()
 
 	if actual != expected {
