@@ -2,8 +2,6 @@ package toshl
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -15,71 +13,42 @@ const (
 
 // Client handles API requests
 type Client struct {
-	client  *http.Client
-	BaseURL *url.URL
-	token   string
+	client HTTPClient
 }
 
 // NewClient returns a new Toshl client
-func NewClient(token string) *Client {
-	httpClient := &http.Client{}
+func NewClient(token string, httpClient HTTPClient) *Client {
 	baseURL, _ := url.Parse(defaultBaseURL)
 
-	c := &Client{client: httpClient, BaseURL: baseURL, token: token}
+	if httpClient == nil {
+		httpClient = &RestHTTPClient{
+			Client:  &http.Client{},
+			BaseURL: baseURL.String(),
+			Token:   token,
+		}
+	}
 
+	c := &Client{client: httpClient}
 	return c
-}
-
-func (c *Client) setAuthenticationHeader(req *http.Request) {
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.token))
-}
-
-func (c *Client) get(API string) (string, error) {
-	url := c.BaseURL.String() + "/" + API
-
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		log.Fatal("NewRequest: ", err)
-		return "", err
-	}
-
-	// Set authorization token
-	c.setAuthenticationHeader(req)
-
-	resp, err := c.client.Do(req)
-	if err != nil {
-		log.Fatal("Do: ", err)
-		return "", err
-	}
-
-	defer resp.Body.Close()
-
-	bs, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal("ReadAll: ", err)
-		return "", err
-	}
-
-	return string(bs), nil
 }
 
 // Accounts returns the list of Accounts
 func (c *Client) Accounts() ([]Account, error) {
-	res, err := c.get("accounts")
+	res, err := c.client.Get("accounts")
 
 	if err != nil {
 		log.Fatal("GET /accounts/: ", err)
 		return nil, err
 	}
 
-	var account []Account
+	var accounts []Account
 
-	err = json.Unmarshal([]byte(res), &account)
+	err = json.Unmarshal([]byte(res), &accounts)
 
 	if err != nil {
 		log.Fatalln("JSON: ", res)
 		return nil, err
 	}
 
-	return account, nil
+	return accounts, nil
 }
