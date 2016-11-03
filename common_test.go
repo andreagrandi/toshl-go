@@ -1,14 +1,15 @@
-package toshl
+package toshl_test
 
 import (
 	"encoding/json"
 	"testing"
 
+	toshl "github.com/andreagrandi/toshl-go"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCommonCurrencyDecode(t *testing.T) {
-	var currency Currency
+	var currency toshl.Currency
 	currencyJSON := []byte(`{
         "code": "USD",
         "rate": 1,
@@ -25,7 +26,7 @@ func TestCommonCurrencyDecode(t *testing.T) {
 }
 
 func TestCommonCurrencyDecodeError(t *testing.T) {
-	var currency Currency
+	var currency toshl.Currency
 	currencyJSON := []byte(`{
         "code": 1,
         "rate": "fsdfa",
@@ -37,7 +38,7 @@ func TestCommonCurrencyDecodeError(t *testing.T) {
 }
 
 func TestCommonMedianDecode(t *testing.T) {
-	var median Median
+	var median toshl.Median
 	medianJSON := []byte(`{
         "expenses": 55,
         "incomes": 1300
@@ -53,7 +54,7 @@ func TestCommonMedianDecode(t *testing.T) {
 }
 
 func TestCommonMedianDecodeError(t *testing.T) {
-	var median Median
+	var median toshl.Median
 	medianJSON := []byte(`{
         "expenses": "abc",
         "incomes": 1300
@@ -64,7 +65,7 @@ func TestCommonMedianDecodeError(t *testing.T) {
 }
 
 func TestCommonGoalDecode(t *testing.T) {
-	var goal Goal
+	var goal toshl.Goal
 	goalJSON := []byte(`{
         "amount": 63570,
         "start": "2013-07-01",
@@ -81,7 +82,7 @@ func TestCommonGoalDecode(t *testing.T) {
 }
 
 func TestCommonGoalDecodeError(t *testing.T) {
-	var goal Goal
+	var goal toshl.Goal
 	goalJSON := []byte(`{
         "amount": "abcd",
         "start": "2013-07-01",

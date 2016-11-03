@@ -7,8 +7,9 @@ import (
 	"net/url"
 )
 
+// DefaultBaseURL is ...
 const (
-	defaultBaseURL = "https://api.toshl.com"
+	DefaultBaseURL = "https://api.toshl.com"
 )
 
 // Client handles API requests
@@ -18,7 +19,7 @@ type Client struct {
 
 // NewClient returns a new Toshl client
 func NewClient(token string, httpClient HTTPClient) *Client {
-	baseURL, _ := url.Parse(defaultBaseURL)
+	baseURL, _ := url.Parse(DefaultBaseURL)
 
 	if httpClient == nil {
 		httpClient = &RestHTTPClient{
@@ -30,6 +31,11 @@ func NewClient(token string, httpClient HTTPClient) *Client {
 
 	c := &Client{client: httpClient}
 	return c
+}
+
+// GetHTTPClient returns internal HTTPClient
+func (c *Client) GetHTTPClient() HTTPClient {
+	return c.client
 }
 
 // Accounts returns the list of Accounts
