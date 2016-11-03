@@ -1,14 +1,15 @@
-package toshl
+package toshl_test
 
 import (
 	"encoding/json"
 	"testing"
 
+	toshl "github.com/andreagrandi/toshl-go"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAccountDecode(t *testing.T) {
-	var account Account
+	var account toshl.Account
 	accountJSON := []byte(`{
         "id": "42",
         "name": "Tesla model S",
@@ -43,7 +44,7 @@ func TestAccountDecode(t *testing.T) {
 }
 
 func TestAccountDecodeMultipleAccounts(t *testing.T) {
-	var accounts []Account
+	var accounts []toshl.Account
 	accountJSON := []byte(`[{
         "id": "42",
         "name": "Tesla model S",
@@ -102,7 +103,7 @@ func TestAccountDecodeMultipleAccounts(t *testing.T) {
 }
 
 func TestAccountDecodeError(t *testing.T) {
-	var account Account
+	var account toshl.Account
 	accountJSON := []byte(`{
         "id": "42",
         "name": "Tesla model S",

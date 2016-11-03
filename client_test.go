@@ -1,8 +1,9 @@
-package toshl
+package toshl_test
 
 import (
 	"testing"
 
+	toshl "github.com/andreagrandi/toshl-go"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,7 +18,7 @@ func (mc *MockedHTTPClient) Get(APIUrl string) (string, error) {
 
 func TestClientDefaultURL(t *testing.T) {
 	expected := "https://api.toshl.com"
-	actual := defaultBaseURL
+	actual := toshl.DefaultBaseURL
 
 	if actual != expected {
 		t.Errorf("Test failed, expected: '%s', got:  '%s'", expected, actual)
@@ -25,8 +26,8 @@ func TestClientDefaultURL(t *testing.T) {
 }
 
 func TestClientNewClient(t *testing.T) {
-	c := NewClient("abcd1234", &MockedHTTPClient{})
-	assert.NotNil(t, c.client)
+	c := toshl.NewClient("abcd1234", &MockedHTTPClient{})
+	assert.NotNil(t, c.GetHTTPClient())
 }
 
 func TestClientAccounts(t *testing.T) {
@@ -55,7 +56,7 @@ func TestClientAccounts(t *testing.T) {
 		}
 	}]`
 
-	c := NewClient("abcd1234", mc)
+	c := toshl.NewClient("abcd1234", mc)
 	accounts, _ := c.Accounts()
 	assert.Len(t, accounts, 1)
 }
@@ -109,7 +110,7 @@ func TestClientAccountsMultiple(t *testing.T) {
 		}
 	}]`
 
-	c := NewClient("abcd1234", mc)
+	c := toshl.NewClient("abcd1234", mc)
 	accounts, _ := c.Accounts()
 	assert.Len(t, accounts, 2)
 }
