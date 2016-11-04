@@ -2,6 +2,7 @@ package toshl
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -57,4 +58,25 @@ func (c *Client) Accounts() ([]Account, error) {
 	}
 
 	return accounts, nil
+}
+
+// GetAccount returns the a specific Account
+func (c *Client) GetAccount(accountID string) (*Account, error) {
+	res, err := c.client.Get(fmt.Sprintf("accounts/%s", accountID))
+
+	if err != nil {
+		log.Fatal(fmt.Sprintf("GET /accounts/%s: ", accountID), err)
+		return nil, err
+	}
+
+	var account *Account
+
+	err = json.Unmarshal([]byte(res), &account)
+
+	if err != nil {
+		log.Fatalln("JSON: ", res)
+		return nil, err
+	}
+
+	return account, nil
 }
