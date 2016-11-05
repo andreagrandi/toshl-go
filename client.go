@@ -103,3 +103,21 @@ func (c *Client) CreateAccount(account *Account) error {
 
 	return nil
 }
+
+// SearchAccount search for Account name and return an Account
+func (c *Client) SearchAccount(accountName string) (*Account, error) {
+	accounts, err := c.Accounts()
+
+	if err != nil {
+		log.Fatal("GET /accounts/: ", err)
+		return nil, err
+	}
+
+	for _, account := range accounts {
+		if account.Name == accountName {
+			return &account, nil
+		}
+	}
+
+	return nil, nil
+}
