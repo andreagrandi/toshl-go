@@ -16,6 +16,10 @@ func (mc *MockedHTTPClient) Get(APIUrl string) (string, error) {
 	return mc.JSONString, mc.Error
 }
 
+func (mc *MockedHTTPClient) Post(APIUrl, JSONPayload string) (string, error) {
+	return mc.JSONString, mc.Error
+}
+
 func TestClientDefaultURL(t *testing.T) {
 	expected := "https://api.toshl.com"
 	actual := toshl.DefaultBaseURL
@@ -143,5 +147,21 @@ func TestClientGetAccount(t *testing.T) {
 
 	c := toshl.NewClient("abcd1234", mc)
 	account, _ := c.GetAccount("42")
+	assert.Equal(t, account.ID, "42")
+}
+
+func TestClientCreateAccount(t *testing.T) {
+	mc := &MockedHTTPClient{}
+	mc.JSONString = "42"
+
+	account := &toshl.Account{
+		Name: "Test",
+		Currency: toshl.Currency{
+			Code: "GBP",
+		},
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	c.CreateAccount(account)
 	assert.Equal(t, account.ID, "42")
 }
