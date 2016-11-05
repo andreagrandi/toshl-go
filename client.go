@@ -80,3 +80,26 @@ func (c *Client) GetAccount(accountID string) (*Account, error) {
 
 	return account, nil
 }
+
+// CreateAccount creates a Toshl Account
+func (c *Client) CreateAccount(account *Account) error {
+	jsonBytes, err := json.Marshal(account)
+
+	if err != nil {
+		log.Fatalln("CeateAccount: ", err)
+		return err
+	}
+
+	jsonStr := string(jsonBytes)
+
+	id, err := c.client.Post("accounts", jsonStr)
+
+	if err != nil {
+		log.Fatal("POST /accounts/ ", err)
+		return err
+	}
+
+	account.ID = id
+
+	return nil
+}
