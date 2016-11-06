@@ -13,7 +13,7 @@ import (
 
 // HTTPClient is an interface to define the client to access API resources
 type HTTPClient interface {
-	Get(APIUrl string) (string, error)
+	Get(APIUrl, queryString string) (string, error)
 	Post(APIUrl, JSONPayload string) (string, error)
 }
 
@@ -66,8 +66,12 @@ func (c *RestHTTPClient) parseIDFromLocationHeader(
 }
 
 // Get takes an API endpoint and return a JSON string
-func (c *RestHTTPClient) Get(APIUrl string) (string, error) {
+func (c *RestHTTPClient) Get(APIUrl, queryString string) (string, error) {
 	url := c.BaseURL + "/" + APIUrl
+
+	if queryString != "" {
+		url = url + "?" + queryString
+	}
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

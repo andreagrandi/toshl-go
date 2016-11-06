@@ -40,8 +40,14 @@ func (c *Client) GetHTTPClient() HTTPClient {
 }
 
 // Accounts returns the list of Accounts
-func (c *Client) Accounts() ([]Account, error) {
-	res, err := c.client.Get("accounts")
+func (c *Client) Accounts(params *AccountQueryParams) ([]Account, error) {
+	queryString := ""
+
+	if params != nil {
+		queryString = params.getQueryString()
+	}
+
+	res, err := c.client.Get("accounts", queryString)
 
 	if err != nil {
 		log.Fatal("GET /accounts/: ", err)
@@ -62,7 +68,7 @@ func (c *Client) Accounts() ([]Account, error) {
 
 // GetAccount returns the a specific Account
 func (c *Client) GetAccount(accountID string) (*Account, error) {
-	res, err := c.client.Get(fmt.Sprintf("accounts/%s", accountID))
+	res, err := c.client.Get(fmt.Sprintf("accounts/%s", accountID), "")
 
 	if err != nil {
 		log.Fatal(fmt.Sprintf("GET /accounts/%s: ", accountID), err)
@@ -106,7 +112,7 @@ func (c *Client) CreateAccount(account *Account) error {
 
 // SearchAccount search for Account name and return an Account
 func (c *Client) SearchAccount(accountName string) (*Account, error) {
-	accounts, err := c.Accounts()
+	accounts, err := c.Accounts(nil)
 
 	if err != nil {
 		log.Fatal("GET /accounts/: ", err)
