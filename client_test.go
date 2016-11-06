@@ -12,7 +12,7 @@ type MockedHTTPClient struct {
 	Error      error
 }
 
-func (mc *MockedHTTPClient) Get(APIUrl string) (string, error) {
+func (mc *MockedHTTPClient) Get(APIUrl, queryString string) (string, error) {
 	return mc.JSONString, mc.Error
 }
 
@@ -61,7 +61,7 @@ func TestClientAccounts(t *testing.T) {
 	}]`
 
 	c := toshl.NewClient("abcd1234", mc)
-	accounts, _ := c.Accounts()
+	accounts, _ := c.Accounts(nil)
 	assert.Len(t, accounts, 1)
 }
 
@@ -115,7 +115,7 @@ func TestClientAccountsMultiple(t *testing.T) {
 	}]`
 
 	c := toshl.NewClient("abcd1234", mc)
-	accounts, _ := c.Accounts()
+	accounts, _ := c.Accounts(nil)
 	assert.Len(t, accounts, 2)
 }
 
