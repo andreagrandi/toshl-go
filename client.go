@@ -143,7 +143,7 @@ func (c *Client) UpdateAccount(account *Account) error {
 		fmt.Sprintf("accounts/%s", account.ID), jsonStr)
 
 	if err != nil {
-		log.Fatal("POST /accounts/ ", err)
+		log.Fatal("PUT /accounts/ ", err)
 		return err
 	}
 
@@ -151,6 +151,18 @@ func (c *Client) UpdateAccount(account *Account) error {
 
 	if err != nil {
 		log.Fatalln("Cannot decode Account JSON")
+		return err
+	}
+
+	return nil
+}
+
+// DeleteAccount deletes a Toshl Account
+func (c *Client) DeleteAccount(account *Account) error {
+	err := c.client.Delete(fmt.Sprintf("accounts/%s", account.ID))
+
+	if err != nil {
+		log.Fatal("DELETE /accounts/ ", err)
 		return err
 	}
 
