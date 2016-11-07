@@ -24,6 +24,10 @@ func (mc *MockedHTTPClient) Update(APIUrl, JSONPayload string) (string, error) {
 	return mc.JSONString, mc.Error
 }
 
+func (mc *MockedHTTPClient) Delete(APIUrl string) error {
+	return mc.Error
+}
+
 func TestClientDefaultURL(t *testing.T) {
 	expected := "https://api.toshl.com"
 	actual := toshl.DefaultBaseURL
@@ -251,5 +255,21 @@ func TestClientUpdateAccount(t *testing.T) {
 	c := toshl.NewClient("abcd1234", mc)
 	err := c.UpdateAccount(account)
 	assert.Equal(t, account.Name, "Tesla model S")
+	assert.Nil(t, err)
+}
+
+func TestClientDeleteAccount(t *testing.T) {
+	mc := &MockedHTTPClient{}
+
+	account := &toshl.Account{
+		ID:   "50",
+		Name: "Test",
+		Currency: toshl.Currency{
+			Code: "GBP",
+		},
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	err := c.DeleteAccount(account)
 	assert.Nil(t, err)
 }

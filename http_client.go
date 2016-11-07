@@ -16,6 +16,7 @@ type HTTPClient interface {
 	Get(APIUrl, queryString string) (string, error)
 	Post(APIUrl, JSONPayload string) (string, error)
 	Update(APIUrl, JSONPayload string) (string, error)
+	Delete(APIUrl string) error
 }
 
 // RestHTTPClient is a real implementation of the HTTPClient
@@ -167,4 +168,26 @@ func (c *RestHTTPClient) Update(APIUrl, JSONPayload string) (string, error) {
 	}
 
 	return string(bs), nil
+}
+
+// Delete removes the Account having the ID specified in the endpoint
+func (c *RestHTTPClient) Delete(APIUrl string) error {
+	url := c.BaseURL + "/" + APIUrl
+
+	req, err := http.NewRequest("DELETE", url, nil)
+	if err != nil {
+		log.Fatal("NewRequest: ", err)
+		return err
+	}
+
+	// Set authorization token
+	c.setAuthenticationHeader(req)
+
+	_, err = c.Client.Do(req)
+	if err != nil {
+		log.Fatal("Do: ", err)
+		return err
+	}
+
+	return nil
 }
