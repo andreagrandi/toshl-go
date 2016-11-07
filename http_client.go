@@ -15,6 +15,7 @@ import (
 type HTTPClient interface {
 	Get(APIUrl, queryString string) (string, error)
 	Post(APIUrl, JSONPayload string) (string, error)
+	Update(APIUrl, JSONPayload string) (string, error)
 }
 
 // RestHTTPClient is a real implementation of the HTTPClient
@@ -132,4 +133,38 @@ func (c *RestHTTPClient) Post(APIUrl, JSONPayload string) (string, error) {
 	}
 
 	return id, nil
+}
+
+// Update takes an API endpoint and a JSON payload and update the resource
+func (c *RestHTTPClient) Update(APIUrl, JSONPayload string) (string, error) {
+	url := c.BaseURL + "/" + APIUrl
+	var jsonStr = []byte(JSONPayload)
+
+	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(jsonStr))
+	if err != nil {
+		log.Fatal("NewRequest: ", err)
+		return "", err
+	}
+
+	// Set authorization token
+	c.setAuthenticationHeader(req)
+
+	// Set JSON content type
+	c.setJSONContentTypeHeader(req)
+
+	resp, err := c.Client.Do(req)
+	if err != nil {
+		log.Fatal("Do: ", err)
+		return "", err
+	}
+
+	defer resp.Body.Close()
+
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal("ReadAll: ", err)
+		return "", err
+	}
+
+	return string(bs), nil
 }

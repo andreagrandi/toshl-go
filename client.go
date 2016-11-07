@@ -127,3 +127,32 @@ func (c *Client) SearchAccount(accountName string) (*Account, error) {
 
 	return nil, nil
 }
+
+// UpdateAccount updates a Toshl Account
+func (c *Client) UpdateAccount(account *Account) error {
+	jsonBytes, err := json.Marshal(account)
+
+	if err != nil {
+		log.Fatalln("CeateAccount: ", err)
+		return err
+	}
+
+	jsonStr := string(jsonBytes)
+
+	accountResponse, err := c.client.Update(
+		fmt.Sprintf("accounts/%s", account.ID), jsonStr)
+
+	if err != nil {
+		log.Fatal("POST /accounts/ ", err)
+		return err
+	}
+
+	err = json.Unmarshal([]byte(accountResponse), account)
+
+	if err != nil {
+		log.Fatalln("Cannot decode Account JSON")
+		return err
+	}
+
+	return nil
+}

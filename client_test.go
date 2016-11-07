@@ -20,6 +20,10 @@ func (mc *MockedHTTPClient) Post(APIUrl, JSONPayload string) (string, error) {
 	return mc.JSONString, mc.Error
 }
 
+func (mc *MockedHTTPClient) Update(APIUrl, JSONPayload string) (string, error) {
+	return mc.JSONString, mc.Error
+}
+
 func TestClientDefaultURL(t *testing.T) {
 	expected := "https://api.toshl.com"
 	actual := toshl.DefaultBaseURL
@@ -218,4 +222,34 @@ func TestClientSearchAccount(t *testing.T) {
 	c := toshl.NewClient("abcd1234", mc)
 	account, _ := c.SearchAccount("Tesla model A")
 	assert.Equal(t, account.ID, "38")
+}
+
+func TestClientUpdateAccount(t *testing.T) {
+	mc := &MockedHTTPClient{}
+	mc.JSONString = `{
+		"id": "42",
+		"name": "Tesla model S",
+		"balance": 3000,
+		"initial_balance": 3000,
+		"currency": {
+			"code": "USD",
+			"rate": 1,
+			"fixed": false
+		},
+		"status": "active",
+		"order": 0,
+		"modified": "2012-09-04T13:55:15Z"
+	}`
+
+	account := &toshl.Account{
+		Name: "Test",
+		Currency: toshl.Currency{
+			Code: "GBP",
+		},
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	err := c.UpdateAccount(account)
+	assert.Equal(t, account.Name, "Tesla model S")
+	assert.Nil(t, err)
 }
