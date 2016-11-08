@@ -273,3 +273,19 @@ func TestClientDeleteAccount(t *testing.T) {
 	err := c.DeleteAccount(account)
 	assert.Nil(t, err)
 }
+
+func TestClientMoveAccount(t *testing.T) {
+	mc := &MockedHTTPClient{}
+
+	account := &toshl.Account{
+		ID:   "50",
+		Name: "Test",
+		Currency: toshl.Currency{
+			Code: "GBP",
+		},
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	err := c.MoveAccount(account, 10)
+	assert.Nil(t, err)
+}

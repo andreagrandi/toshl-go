@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 // DefaultBaseURL is ...
@@ -163,6 +164,19 @@ func (c *Client) DeleteAccount(account *Account) error {
 
 	if err != nil {
 		log.Fatal("DELETE /accounts/ ", err)
+		return err
+	}
+
+	return nil
+}
+
+// MoveAccount move a Toshl Account to a different position
+func (c *Client) MoveAccount(account *Account, position int) error {
+	jsonStr := fmt.Sprintf(`{"position": %s}`, strconv.Itoa(position))
+	_, err := c.client.Post(fmt.Sprintf("accounts/%s", account.ID), jsonStr)
+
+	if err != nil {
+		log.Fatal("POST /accounts/ ", err)
 		return err
 	}
 
