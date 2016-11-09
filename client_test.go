@@ -293,11 +293,24 @@ func TestClientMoveAccount(t *testing.T) {
 func TestClientReorderAccounts(t *testing.T) {
 	mc := &MockedHTTPClient{}
 
-	order := &toshl.AccountsOrder{
+	order := &toshl.AccountsOrderParams{
 		Order: []int{4, 12, 46, 2},
 	}
 
 	c := toshl.NewClient("abcd1234", mc)
 	err := c.ReorderAccounts(order)
+	assert.Nil(t, err)
+}
+
+func TestClientMergeAccounts(t *testing.T) {
+	mc := &MockedHTTPClient{}
+
+	merge := &toshl.AccountsMergeParams{
+		Accounts: []string{"42", "43", "46"},
+		Account:  "42",
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	err := c.MergeAccounts(merge)
 	assert.Nil(t, err)
 }

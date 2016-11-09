@@ -184,11 +184,11 @@ func (c *Client) MoveAccount(account *Account, position int) error {
 }
 
 // ReorderAccounts change the order of Toshl accounts
-func (c *Client) ReorderAccounts(order *AccountsOrder) error {
+func (c *Client) ReorderAccounts(order *AccountsOrderParams) error {
 	jsonBytes, err := json.Marshal(order)
 
 	if err != nil {
-		log.Fatalln("CeateAccount: ", err)
+		log.Fatalln("ReorderAccounts: ", err)
 		return err
 	}
 
@@ -198,6 +198,27 @@ func (c *Client) ReorderAccounts(order *AccountsOrder) error {
 
 	if err != nil {
 		log.Fatal("POST /accounts/reorder ", err)
+		return err
+	}
+
+	return nil
+}
+
+// MergeAccounts merges two ore more Toshl accounts into a single one
+func (c *Client) MergeAccounts(order *AccountsMergeParams) error {
+	jsonBytes, err := json.Marshal(order)
+
+	if err != nil {
+		log.Fatalln("MergeAccounts: ", err)
+		return err
+	}
+
+	jsonStr := string(jsonBytes)
+
+	_, err = c.client.Post("accounts/merge", jsonStr)
+
+	if err != nil {
+		log.Fatal("POST /accounts/merge ", err)
 		return err
 	}
 

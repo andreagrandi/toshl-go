@@ -56,7 +56,13 @@ func (a *AccountQueryParams) getQueryString() string {
 	return v.Encode()
 }
 
-// AccountsOrder describes the order we want for the accounts
-type AccountsOrder struct {
+// AccountsOrderParams describes the order we want for the accounts
+type AccountsOrderParams struct {
 	Order []int `json:"order"`
+}
+
+// AccountsMergeParams describes how we want to merge the accounts
+type AccountsMergeParams struct {
+	Accounts []string `json:"accounts"`
+	Account  string   `json:"account"`
 }
