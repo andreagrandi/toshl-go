@@ -289,3 +289,15 @@ func TestClientMoveAccount(t *testing.T) {
 	err := c.MoveAccount(account, 10)
 	assert.Nil(t, err)
 }
+
+func TestClientReorderAccounts(t *testing.T) {
+	mc := &MockedHTTPClient{}
+
+	order := &toshl.AccountsOrder{
+		Order: []int{4, 12, 46, 2},
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	err := c.ReorderAccounts(order)
+	assert.Nil(t, err)
+}

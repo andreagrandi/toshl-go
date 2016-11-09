@@ -55,3 +55,8 @@ func (a *AccountQueryParams) getQueryString() string {
 
 	return v.Encode()
 }
+
+// AccountsOrder describes the order we want for the accounts
+type AccountsOrder struct {
+	Order []int `json:"order"`
+}
