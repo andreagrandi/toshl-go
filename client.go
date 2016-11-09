@@ -182,3 +182,24 @@ func (c *Client) MoveAccount(account *Account, position int) error {
 
 	return nil
 }
+
+// ReorderAccounts change the order of Toshl accounts
+func (c *Client) ReorderAccounts(order *AccountsOrder) error {
+	jsonBytes, err := json.Marshal(order)
+
+	if err != nil {
+		log.Fatalln("CeateAccount: ", err)
+		return err
+	}
+
+	jsonStr := string(jsonBytes)
+
+	_, err = c.client.Post("accounts/reorder", jsonStr)
+
+	if err != nil {
+		log.Fatal("POST /accounts/reorder ", err)
+		return err
+	}
+
+	return nil
+}
