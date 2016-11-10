@@ -294,7 +294,7 @@ func TestClientReorderAccounts(t *testing.T) {
 	mc := &MockedHTTPClient{}
 
 	order := &toshl.AccountsOrderParams{
-		Order: []int{4, 12, 46, 2},
+		Order: []string{"4", "12", "46", "2"},
 	}
 
 	c := toshl.NewClient("abcd1234", mc)
