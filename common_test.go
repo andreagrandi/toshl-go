@@ -92,3 +92,16 @@ func TestCommonGoalDecodeError(t *testing.T) {
 	err := json.Unmarshal(goalJSON, &goal)
 	assert.NotNil(t, err)
 }
+
+func TestCommonRecurrenceDecode(t *testing.T) {
+	var recurrence toshl.Recurrence
+	recurrenceJSON := []byte(`{
+		"frequency": "monthly",
+		"interval": 1,
+		"start": "2012-06-01",
+		"iteration": 4
+  	}`)
+
+	err := json.Unmarshal(recurrenceJSON, &recurrence)
+	assert.Nil(t, err)
+}
