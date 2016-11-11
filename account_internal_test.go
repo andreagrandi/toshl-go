@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetQueryString(t *testing.T) {
+func TestAccountGetQueryString(t *testing.T) {
 	a := AccountQueryParams{
 		Page:           2,
 		PerPage:        1,
@@ -19,5 +19,6 @@ func TestGetQueryString(t *testing.T) {
 
 	assert.Equal(t,
 		a.getQueryString(),
-		"include_deleted=true&page=2&per_page=1&since=2016-11-06T13%3A28%3A00Z&status=active")
+		`include_deleted=true&page=2&per_page=1&`+
+			`since=2016-11-06T13%3A28%3A00Z&status=active`)
 }

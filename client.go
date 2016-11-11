@@ -224,3 +224,30 @@ func (c *Client) MergeAccounts(order *AccountsMergeParams) error {
 
 	return nil
 }
+
+// Budgets returns the list of Budgets
+func (c *Client) Budgets(params *BudgetQueryParams) ([]Budget, error) {
+	queryString := ""
+
+	if params != nil {
+		queryString = params.getQueryString()
+	}
+
+	res, err := c.client.Get("budgets", queryString)
+
+	if err != nil {
+		log.Fatal("GET /budgets/: ", err)
+		return nil, err
+	}
+
+	var budgets []Budget
+
+	err = json.Unmarshal([]byte(res), &budgets)
+
+	if err != nil {
+		log.Fatalln("JSON: ", res)
+		return nil, err
+	}
+
+	return budgets, nil
+}
