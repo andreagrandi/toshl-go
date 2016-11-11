@@ -19,3 +19,11 @@ type Goal struct {
 	Start  string  `json:"start"`
 	End    string  `json:"end"`
 }
+
+// Recurrence represents a Toshl recurrence
+type Recurrence struct {
+		Frequency string `json:"frequency"`
+		Interval int `json:"interval"`
+		Start string `json:"start"`
+		Iteration int `json:"iteration"`
+}
