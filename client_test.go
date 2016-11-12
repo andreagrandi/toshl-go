@@ -349,3 +349,37 @@ func TestClientBudgets(t *testing.T) {
 	budgets, _ := c.Budgets(nil)
 	assert.Len(t, budgets, 1)
 }
+
+func TestClientGetBudget(t *testing.T) {
+	mc := &MockedHTTPClient{}
+	mc.JSONString = `{
+		"id": "42",
+		"name": "Monthly budget",
+		"limit": 1000,
+		"amount": 78.4,
+		"planned": 12.6,
+		"currency": {
+			"code": "USD",
+			"rate": 1,
+			"fixed": false
+		},
+		"from": "2013-02-01",
+		"to": "2013-02-30",
+		"rollover": false,
+		"modified": "2013-06-27T14:14:03+00:00Z",
+		"recurrence": {
+			"frequency": "monthly",
+			"interval": 1,
+			"start": "2012-06-01",
+			"iteration": 4
+		},
+		"status": "active",
+		"type": "regular",
+		"order": 0,
+		"categories": ["42"]
+	}`
+
+	c := toshl.NewClient("abcd1234", mc)
+	budget, _ := c.GetBudget("42")
+	assert.Equal(t, budget.ID, "42")
+}
