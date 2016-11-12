@@ -251,3 +251,24 @@ func (c *Client) Budgets(params *BudgetQueryParams) ([]Budget, error) {
 
 	return budgets, nil
 }
+
+// GetBudget returns the a specific Budget
+func (c *Client) GetBudget(budgetID string) (*Budget, error) {
+	res, err := c.client.Get(fmt.Sprintf("budgets/%s", budgetID), "")
+
+	if err != nil {
+		log.Fatal(fmt.Sprintf("GET /budgets/%s: ", budgetID), err)
+		return nil, err
+	}
+
+	var budget *Budget
+
+	err = json.Unmarshal([]byte(res), &budget)
+
+	if err != nil {
+		log.Fatalln("JSON: ", res)
+		return nil, err
+	}
+
+	return budget, nil
+}
