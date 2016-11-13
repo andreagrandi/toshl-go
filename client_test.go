@@ -383,3 +383,24 @@ func TestClientGetBudget(t *testing.T) {
 	budget, _ := c.GetBudget("42")
 	assert.Equal(t, budget.ID, "42")
 }
+
+func TestClientCategories(t *testing.T) {
+	mc := &MockedHTTPClient{}
+	mc.JSONString = `[
+		{
+			"id": "42",
+			"name": "Entertainment",
+			"modified": "2012-09-04T13:55:15Z",
+			"type": "expense",
+			"deleted": false,
+			"counts": {
+			"entries": 21,
+			"tags": 5
+			}
+		}
+	]`
+
+	c := toshl.NewClient("abcd1234", mc)
+	categories, _ := c.Categories(nil)
+	assert.Len(t, categories, 1)
+}

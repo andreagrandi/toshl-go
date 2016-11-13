@@ -22,8 +22,14 @@ type Goal struct {
 
 // Recurrence represents a Toshl recurrence
 type Recurrence struct {
-		Frequency string `json:"frequency"`
-		Interval int `json:"interval"`
-		Start string `json:"start"`
-		Iteration int `json:"iteration"`
+	Frequency string `json:"frequency"`
+	Interval  int    `json:"interval"`
+	Start     string `json:"start"`
+	Iteration int    `json:"iteration"`
+}
+
+// CategoryCounts represents a Toshl count
+type CategoryCounts struct {
+	Entries int `json:"entries"`
+	Tags    int `json:"tags"`
 }

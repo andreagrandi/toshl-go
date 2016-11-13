@@ -272,3 +272,30 @@ func (c *Client) GetBudget(budgetID string) (*Budget, error) {
 
 	return budget, nil
 }
+
+// Categories returns the list of Categories
+func (c *Client) Categories(params *CategoryQueryParams) ([]Category, error) {
+	queryString := ""
+
+	if params != nil {
+		queryString = params.getQueryString()
+	}
+
+	res, err := c.client.Get("categories", queryString)
+
+	if err != nil {
+		log.Fatal("GET /categories/: ", err)
+		return nil, err
+	}
+
+	var categories []Category
+
+	err = json.Unmarshal([]byte(res), &categories)
+
+	if err != nil {
+		log.Fatalln("JSON: ", res)
+		return nil, err
+	}
+
+	return categories, nil
+}
