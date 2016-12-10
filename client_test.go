@@ -404,3 +404,22 @@ func TestClientCategories(t *testing.T) {
 	categories, _ := c.Categories(nil)
 	assert.Len(t, categories, 1)
 }
+
+func TestClientGetCategory(t *testing.T) {
+	mc := &MockedHTTPClient{}
+	mc.JSONString = `{
+		"id": "42",
+		"name": "Entertainment",
+		"modified": "2012-09-04T13:55:15Z",
+		"type": "expense",
+		"deleted": false,
+		"counts": {
+			"entries": 21,
+			"tags": 5
+		}
+	}`
+
+	c := toshl.NewClient("abcd1234", mc)
+	category, _ := c.GetCategory("42")
+	assert.Equal(t, category.ID, "42")
+}

@@ -299,3 +299,24 @@ func (c *Client) Categories(params *CategoryQueryParams) ([]Category, error) {
 
 	return categories, nil
 }
+
+// GetCategory returns the a specific Category
+func (c *Client) GetCategory(categoryID string) (*Category, error) {
+	res, err := c.client.Get(fmt.Sprintf("categories/%s", categoryID), "")
+
+	if err != nil {
+		log.Fatal(fmt.Sprintf("GET /categories/%s: ", categoryID), err)
+		return nil, err
+	}
+
+	var category *Category
+
+	err = json.Unmarshal([]byte(res), &category)
+
+	if err != nil {
+		log.Fatalln("JSON: ", res)
+		return nil, err
+	}
+
+	return category, nil
+}
