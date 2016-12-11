@@ -423,3 +423,17 @@ func TestClientGetCategory(t *testing.T) {
 	category, _ := c.GetCategory("42")
 	assert.Equal(t, category.ID, "42")
 }
+
+func TestClientCreateCategory(t *testing.T) {
+	mc := &MockedHTTPClient{}
+	mc.JSONString = "42"
+
+	category := &toshl.Category{
+		Name: "Test",
+		Type: "expense",
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	c.CreateCategory(category)
+	assert.Equal(t, category.ID, "42")
+}

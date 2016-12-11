@@ -320,3 +320,26 @@ func (c *Client) GetCategory(categoryID string) (*Category, error) {
 
 	return category, nil
 }
+
+// CreateCategory creates a Toshl Category
+func (c *Client) CreateCategory(category *Category) error {
+	jsonBytes, err := json.Marshal(category)
+
+	if err != nil {
+		log.Fatalln("CeateCategory: ", err)
+		return err
+	}
+
+	jsonStr := string(jsonBytes)
+
+	id, err := c.client.Post("categories", jsonStr)
+
+	if err != nil {
+		log.Fatal("POST /categories/ ", err)
+		return err
+	}
+
+	category.ID = id
+
+	return nil
+}
