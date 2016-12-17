@@ -343,3 +343,32 @@ func (c *Client) CreateCategory(category *Category) error {
 
 	return nil
 }
+
+// UpdateCategory updates a Toshl Category
+func (c *Client) UpdateCategory(category *Category) error {
+	jsonBytes, err := json.Marshal(category)
+
+	if err != nil {
+		log.Fatalln("UpdateCategory: ", err)
+		return err
+	}
+
+	jsonStr := string(jsonBytes)
+
+	categoryResponse, err := c.client.Update(
+		fmt.Sprintf("categories/%s", category.ID), jsonStr)
+
+	if err != nil {
+		log.Fatal("PUT /categories/ ", err)
+		return err
+	}
+
+	err = json.Unmarshal([]byte(categoryResponse), category)
+
+	if err != nil {
+		log.Fatalln("Cannot decode Category JSON")
+		return err
+	}
+
+	return nil
+}
