@@ -372,3 +372,15 @@ func (c *Client) UpdateCategory(category *Category) error {
 
 	return nil
 }
+
+// DeleteCategory deletes a Toshl Category
+func (c *Client) DeleteCategory(category *Category) error {
+	err := c.client.Delete(fmt.Sprintf("categories/%s", category.ID))
+
+	if err != nil {
+		log.Fatal("DELETE /categories/ ", err)
+		return err
+	}
+
+	return nil
+}
