@@ -462,3 +462,16 @@ func TestClientUpdateCategory(t *testing.T) {
 	assert.Equal(t, category.Name, "Entertainment")
 	assert.Nil(t, err)
 }
+
+func TestClientDeleteCategory(t *testing.T) {
+	mc := &MockedHTTPClient{}
+
+	category := &toshl.Category{
+		Name: "Test",
+		Type: "expense",
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	err := c.DeleteCategory(category)
+	assert.Nil(t, err)
+}
