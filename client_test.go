@@ -476,3 +476,16 @@ func TestClientDeleteCategory(t *testing.T) {
 	err := c.DeleteCategory(category)
 	assert.Nil(t, err)
 }
+
+func TestClientMergeCategories(t *testing.T) {
+	mc := &MockedHTTPClient{}
+
+	merge := &toshl.CategoriesMergeParams{
+		Categories: []string{"42", "43", "46"},
+		Category:   "42",
+	}
+
+	c := toshl.NewClient("abcd1234", mc)
+	err := c.MergeCategories(merge)
+	assert.Nil(t, err)
+}

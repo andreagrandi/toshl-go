@@ -384,3 +384,24 @@ func (c *Client) DeleteCategory(category *Category) error {
 
 	return nil
 }
+
+// MergeCategories merges two ore more Toshl categories into a single one
+func (c *Client) MergeCategories(order *CategoriesMergeParams) error {
+	jsonBytes, err := json.Marshal(order)
+
+	if err != nil {
+		log.Fatalln("MergeCategories: ", err)
+		return err
+	}
+
+	jsonStr := string(jsonBytes)
+
+	_, err = c.client.Post("categories/merge", jsonStr)
+
+	if err != nil {
+		log.Fatal("POST /categories/merge ", err)
+		return err
+	}
+
+	return nil
+}

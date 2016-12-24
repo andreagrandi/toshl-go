@@ -56,3 +56,9 @@ func (c *CategoryQueryParams) getQueryString() string {
 
 	return v.Encode()
 }
+
+// CategoriesMergeParams describes how we want to merge the categories
+type CategoriesMergeParams struct {
+	Categories []string `json:"categories"`
+	Category   string   `json:"category"`
+}
