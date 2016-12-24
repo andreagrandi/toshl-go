@@ -467,6 +467,7 @@ func TestClientDeleteCategory(t *testing.T) {
 	mc := &MockedHTTPClient{}
 
 	category := &toshl.Category{
+		ID:   "20",
 		Name: "Test",
 		Type: "expense",
 	}
