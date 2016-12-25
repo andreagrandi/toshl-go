@@ -6,12 +6,14 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"runtime"
 	"strconv"
 )
 
 // DefaultBaseURL is ...
 const (
-	DefaultBaseURL = "https://api.toshl.com"
+	DefaultBaseURL     = "https://api.toshl.com"
+	ToshlClientVersion = "0.1"
 )
 
 // Client handles API requests
@@ -38,6 +40,12 @@ func NewClient(token string, httpClient HTTPClient) *Client {
 // GetHTTPClient returns internal HTTPClient
 func (c *Client) GetHTTPClient() HTTPClient {
 	return c.client
+}
+
+// GetUserAgentString returns the string for UserAgent
+func GetUserAgentString() string {
+	return fmt.Sprintf(
+		"toshl-go %s - %s", ToshlClientVersion, runtime.Version())
 }
 
 // Accounts returns the list of Accounts

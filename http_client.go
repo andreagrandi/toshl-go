@@ -34,6 +34,10 @@ func (c *RestHTTPClient) setJSONContentTypeHeader(req *http.Request) {
 	req.Header.Set("Content-Type", "application/json")
 }
 
+func (c *RestHTTPClient) setUserAgentHeader(req *http.Request) {
+	req.Header.Set("User-Agent", GetUserAgentString())
+}
+
 func (c *RestHTTPClient) getIDFromLocationHeader(
 	response *http.Response) (string, error) {
 
@@ -84,6 +88,9 @@ func (c *RestHTTPClient) Get(APIUrl, queryString string) (string, error) {
 	// Set authorization token
 	c.setAuthenticationHeader(req)
 
+	// Set User-Agent header
+	c.setUserAgentHeader(req)
+
 	resp, err := c.Client.Do(req)
 	if err != nil {
 		log.Fatal("Do: ", err)
@@ -117,6 +124,9 @@ func (c *RestHTTPClient) Post(APIUrl, JSONPayload string) (string, error) {
 
 	// Set JSON content type
 	c.setJSONContentTypeHeader(req)
+
+	// Set User-Agent header
+	c.setUserAgentHeader(req)
 
 	resp, err := c.Client.Do(req)
 	if err != nil {
@@ -153,6 +163,9 @@ func (c *RestHTTPClient) Update(APIUrl, JSONPayload string) (string, error) {
 	// Set JSON content type
 	c.setJSONContentTypeHeader(req)
 
+	// Set User-Agent header
+	c.setUserAgentHeader(req)
+
 	resp, err := c.Client.Do(req)
 	if err != nil {
 		log.Fatal("Do: ", err)
@@ -182,6 +195,9 @@ func (c *RestHTTPClient) Delete(APIUrl string) error {
 
 	// Set authorization token
 	c.setAuthenticationHeader(req)
+
+	// Set User-Agent header
+	c.setUserAgentHeader(req)
 
 	_, err = c.Client.Do(req)
 	if err != nil {
