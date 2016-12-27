@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 // HTTPClient is an interface to define the client to access API resources
@@ -206,4 +207,8 @@ func (c *RestHTTPClient) Delete(APIUrl string) error {
 	}
 
 	return nil
+}
+
+func (c *RestHTTPClient) SetTimeoutSeconds(timeout int) {
+	c.Client.Timeout = time.Duration(timeout) * time.Second
 }
